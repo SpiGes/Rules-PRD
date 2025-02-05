@@ -1,0 +1,61 @@
+name: Create Release with Rules_PRD.csv
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release Version (format: yyyy.mm.dd)'
+        required: true
+        type: string
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Release
+        id: create_release
+        env:
+          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Creating release version: $RELEASE_VERSION"
+          gh release create "$RELEASE_VERSION" --title "$RELEASE_VERSION" --notes "Automated release for version $RELEASE_VERSION" --draft
+
+  upload-file:
+    needs: create-release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload Rules_PRD.csv to Release
+        env:
+          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Uploading Rules_PRD.csv to release $RELEASE_VERSION"
+          gh release upload "$RELEASE_VERSION" Rules_PRD.csv --clobber
+
+  publish-release:
+    needs: upload-file
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Publish Release
+        env:
+          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Publishing release version: $RELEASE_VERSION"
+          gh release edit "$RELEASE_VERSION" --draft=false
