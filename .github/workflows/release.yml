@@ -9,7 +9,27 @@ on:
         type: string
 
 jobs:
+  check_git_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if tag exists
+        env:
+          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+        run: |
+          if git rev-parse "refs/tags/$RELEASE_VERSION" >/dev/null 2>&1; then
+            echo "❌ Tag $RELEASE_VERSION already exists. Stopping workflow."
+            exit 1
+          else
+            echo "✅ Tag $RELEASE_VERSION does not exist. Continuing..."
+          fi
+
   create-release:
+    needs: check_git_tag
     runs-on: ubuntu-latest
     permissions:
       contents: write
