@@ -867,6 +867,7 @@ SC_RULE1775;1775;Sekundärtransporte: Die Angabe ist ungültig.;ADMINISTRATIVES;
 SC_RULE1776;1776;"Bei stationären Fällen (Austritten) darf die Variable ""Tarif für die Abrechnung"" nicht ""0"" sein (=unbekannt)";ADMINISTRATIVES;adm;error;;adm.UV_ABC_FALL = 'A' AND adm.UV_TARIF = 0;ABC_FALL = [adm.UV_ABC_FALL], TARIF = [adm.UV_TARIF];;ABC_FALL = [adm.UV_ABC_FALL], TARIF = [adm.UV_TARIF];ABC_FALL = [adm.UV_ABC_FALL], TARIF = [adm.UV_TARIF];;"Bei stationären Fällen (Austritten) darf die Variable ""Tarif für die Abrechnung"" nicht ""0"" sein (=unbekannt).";;Pour les cas stationnaires (sorties), le tarif pour la facturation ne doit pas être égal à 0 (inconnu).;Per i casi stazionari (dimissioni), il tariffario per la fatturazione non deve essere 0 (sconosciuto).;
 SC_RULE1777;1777;KTR ist hier nicht fallbezogen;KOSTENTRAEGERSTANDORT;kts;error;;"kts.UV_KTR_TYP NOT BETWEEN 500 AND 799 
 AND kts.UV_KTR_TYP <> 801 
+AND kts.UV_KTR_TYP <> 10 
 AND (
 NVL(kts.UV_KTR_66, 0) <> 0
  OR NVL(kts.UV_KTR_68, 0) <> 0
@@ -875,6 +876,7 @@ SC_RULE1778;1778;Nur für Forschungs- und ausbildungsbezogenes KTR;KOSTENTRAEGER
 AND NVL(kts.UV_KTR_47, 0) <> 0";KTR_TYP = [kts.UV_KTR_TYP], KTR_47 = [kts.UV_KTR_47];;KTR_TYP = [kts.UV_KTR_TYP], KTR_47 = [kts.UV_KTR_47];KTR_TYP = [kts.UV_KTR_TYP], KTR_47 = [kts.UV_KTR_47];;Forschungs- und ausbildungsbezogenes KTR: Für andere KTR-Typen darf kein Wert eingegeben werden (in ITAR_K® nicht ausfüllbar).;;KTR lié à la recherche et à la formation : aucune valeur ne doit être saisie pour les autres types de KTR (non remplissable dans ITAR_K®).;KTR relativo alla ricerca e alla formazione: non è necessario inserire alcun valore per gli altri tipi di KTR (non compilabile in ITAR_K®).;
 SC_RULE1779;1779;KTR ist hier nicht fallbezogen;KOSTENTRAEGERUNTERNEHMEN;ktu;error;;"ktu.UV_KTR_TYP NOT BETWEEN 500 AND 799 
 AND ktu.UV_KTR_TYP <> 801 
+AND ktu.UV_KTR_TYP <> 10 
 AND (
  NVL(ktu.UV_KTR_66, 0) <> 0
  OR NVL(ktu.UV_KTR_68, 0) <> 0
